@@ -21,10 +21,13 @@ router.post('/signup', async(req, res, next) => {
   {
     
     let user = await authService.createUser(username, password);
-    const token = await jwt.sign({user}, process.env.JWT_SECRET_KEY, {expiresIn: "7 days"});
+    if(user)
+    {
+      const token = await jwt.sign({user}, process.env.JWT_SECRET_KEY, {expiresIn: "7 days"});
 
-    return res.json(token)
-    
+      return res.json(token)  
+    }
+    res.sendStatus(500)
   }
   catch(e)
   {

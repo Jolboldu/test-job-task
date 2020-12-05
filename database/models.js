@@ -2,7 +2,8 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize('db', 'name', 'password', {
   host: 'localhost',
-  dialect: 'postgres'
+  dialect: 'postgres',
+  logging: false
 });
 
 const User = sequelize.define('User', {
@@ -19,13 +20,24 @@ const User = sequelize.define('User', {
   // Other model options go here
 });
 
+const Note = sequelize.define('Note', {
+  // Model attributes are defined here
+  userId: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  text: {
+    type: DataTypes.STRING(1000),
+    allowNull: false
+  }
+}, {
+  // Other model options go here
+});
+
 (async () => {
-    try 
+  try 
   {
     await sequelize.sync();
-
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
   } 
   catch (error) {
     console.log(error)

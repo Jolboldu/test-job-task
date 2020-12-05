@@ -9,12 +9,11 @@ async function createUser(username, password)
     
     let user = await models.User.create({username:username, password:hashedPassword});
     
-    return user;
+    return user.dataValues;
   }
   catch(e)
   {
     console.log(e);
-    return e;
   }
 }
 
@@ -31,14 +30,14 @@ async function getUser(username, password)
     );
 
     if(user.length == 0)
-      return null;
+      return undefined;
     
     let isCorrectPassword = await bcrypt.compare(password, user[0].dataValues.password);
     
     if(isCorrectPassword)
       return user[0].dataValues;
 
-    return null;
+    return undefined;
   } 
   catch(e)
   {
@@ -47,7 +46,26 @@ async function getUser(username, password)
   }
 }
 
+async function removeUserById(userId)
+{
+  try
+  {
+    await models.User.destroy({
+      where: {
+        id: userId
+      }
+    });
+
+    return true;
+  }
+  catch(e)
+  {
+    return e;
+  }
+}
+
 module.exports = {
   createUser,
-  getUser
+  getUser,
+  removeUserById
 };
