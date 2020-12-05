@@ -5,11 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var { Sequelize, DataTypes } = require('sequelize');
 
-var indexRouter = require('./routes/index');
-var auth = require('./routes/auth');
-
 require('dotenv').config()
 
+var indexRouter = require('./routes/index');
+var auth = require('./routes/auth');
+var note = require('./routes/note')
 
 var app = express();
 
@@ -20,6 +20,7 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/auth', auth);
+app.use('/note', note);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

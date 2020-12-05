@@ -9,7 +9,7 @@ const sequelize = new Sequelize('db', 'name', 'password', {
 
 var tmpUserId;
 beforeAll(async()=>{
-  await sequelize.sync();
+  // await sequelize.sync();
 
   await sequelize.authenticate();
   console.log('Connection has been established successfully.');

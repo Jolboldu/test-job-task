@@ -23,7 +23,7 @@ const User = sequelize.define('User', {
 const Note = sequelize.define('Note', {
   // Model attributes are defined here
   userId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   text: {
@@ -46,5 +46,6 @@ const Note = sequelize.define('Note', {
 )();
 
 module.exports = {
-  User
+  User,
+  Note
 };
