@@ -1,4 +1,4 @@
-var authService = require('../../services/authService');
+var authService = require('../../src/services/authService');
 const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize('db', 'name', 'password', {

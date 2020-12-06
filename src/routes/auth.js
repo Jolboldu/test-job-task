@@ -50,7 +50,7 @@ router.post('/login', async(req, res, next) => {
 
     if(user) // send token
     {
-      const token = await jwt.sign({user}, process.env.JWT_SECRET_KEY, {expiresIn: "7 days"});
+      const token = await jwt.sign({user}, process.env.JWT_SECRET_KEY, {expiresIn: "24h"});
 
       return res.json(token)
 
@@ -68,5 +68,22 @@ router.post('/login', async(req, res, next) => {
 router.get('/checkToken', util.verifyToken, (req, res, next) => {
   res.sendStatus(200);
 })
+
+router.post('/logout', util.verifyToken, async (req,res,next) => {
+  try
+  {
+    let token = req.decoded.token;
+    // set time
+    // save to redis black list
+    await util.saveToBlackList(token, true, 'EX', 60 * 60 * 24);
+    res.sendStatus(200);
+  }
+  catch(e)
+  {
+    console.log(e);
+    res.sendStatus(500);
+  }
+})
+
 
 module.exports = router;

@@ -41,7 +41,6 @@ app.use(function(err, req, res, next) {
 const sequelize = new Sequelize('db', 'name', 'password', {
   host: 'localhost',
   dialect: 'postgres',
-  // logging: true
 });
 
 (async () => {
@@ -49,7 +48,7 @@ const sequelize = new Sequelize('db', 'name', 'password', {
   {
 
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    console.log('Connection with psql has been established successfully.');
   } 
   catch (error) {
     console.log(error)

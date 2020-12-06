@@ -1,4 +1,4 @@
-var noteService = require('../../services/noteService');
+var noteService = require('../../src/services/noteService');
 const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize('db', 'name', 'password', {

@@ -51,15 +51,19 @@ async function updateNote(user, noteId, text)
   }
 }
 
-async function getNote(noteId)
+async function getNote(scope)
 {
+  console.log(scope);
   try
   {
-    await models.Note.findAll({
-      where: {
-        id: noteId
-      }
-    })
+    let note = await models.Note.findAll({
+      where: scope
+    });
+    
+    if(note.length == 0)
+      return undefined;
+    
+    return note[0].dataValues
   }
   catch(e)
   {
@@ -103,5 +107,6 @@ module.exports = {
   getAllNotes,
   getUserNotes,
   removeNote,
-  updateNote
+  updateNote,
+  getNote
 };
