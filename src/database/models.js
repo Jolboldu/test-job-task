@@ -6,8 +6,8 @@ const sequelize = new Sequelize('db', 'name', 'password', {
   logging: false
 });
 
+
 const User = sequelize.define('User', {
-  // Model attributes are defined here
   username: {
     type: DataTypes.STRING,
     allowNull: false
@@ -16,12 +16,9 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false
   }
-}, {
-  // Other model options go here
-});
+}, {});
 
 const Note = sequelize.define('Note', {
-  // Model attributes are defined here
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false
@@ -30,14 +27,15 @@ const Note = sequelize.define('Note', {
     type: DataTypes.STRING(1000),
     allowNull: false
   }
-}, {
-  // Other model options go here
-});
+}, {});
 
 (async () => {
   try 
   {
     await sequelize.sync();
+    await sequelize.authenticate();
+    console.log('Connection with psql has been established successfully.');
+  
   } 
   catch (error) {
     console.log(error)

@@ -3,6 +3,7 @@ let jwt = require('jsonwebtoken');
 var redis = require('redis');
 var client = redis.createClient();
 var util = require('util');
+
 var getFromBlackList = util.promisify(client.get).bind(client);
 var saveToBlackList = util.promisify(client.set).bind(client);
 

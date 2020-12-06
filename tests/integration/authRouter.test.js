@@ -1,11 +1,12 @@
 var fetch = require('../fetch');
 
-let random = Math.floor(Math.random() * 100000);     // returns a random integer from 0 to 999999
-let username = "testUsername" + random;
+let random = Math.floor(Math.random() * 100000); // returns a random integer from 0 to 999999
+let username = "testUsername" + random; //random username to register
 
-let password = "Luchi0%к";
+let password = "Luchi0%к"; //strong password
+
 const headers = {
-  'authorization': {}
+  'authorization': {} //to store token
 }
 
 describe('signup', () => {

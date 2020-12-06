@@ -52,7 +52,10 @@ router.delete('/:id', util.verifyToken, async (req, res, next) => {
     let noteId = req.params.id;
     let user = req.decoded.user;
 
-    await noteService.removeNote(user, noteId);
+    let status = await noteService.removeNote(user, noteId);
+    if(status == 0) //if note is already removed or never existed
+      return res.sendStatus(404);
+    
     res.sendStatus(200);
   }
   catch(e)
@@ -68,7 +71,7 @@ router.put('/:id', util.verifyToken, async (req, res, next) => {
   {
     let noteId = req.params.id;
     let user = req.decoded.user;
-    let text = req.body.text; //check text length
+    let text = req.body.text;
     
     if(text.length > 1000)
       return res.status(400).json("Размер заметки не должен привышать 1000 символом");
@@ -92,7 +95,7 @@ router.get('/share/:noteId', util.verifyToken, async (req, res, next) => {
 
     let note = await noteService.getNote({id:noteId, userId: user.id});
     if(!note)
-      return res.sendStatus(403)
+      return res.sendStatus(404)
     
     let hash = crypto.createHash('sha256');
     let key = hash.update(note.text).digest('hex');

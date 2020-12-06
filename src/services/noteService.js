@@ -45,7 +45,7 @@ async function updateNote(user, noteId, text)
         id: noteId
       }
     })
-    return status;//array of numbers
+    return status;
   }
   catch(e)
   {

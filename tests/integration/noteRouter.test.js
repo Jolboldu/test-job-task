@@ -1,20 +1,18 @@
 var fetch = require('../fetch');
 
-//setup variables to test
-let random = Math.floor(Math.random() * 100000);     // returns a random integer from 0 to 999999
-let username = "testUsername1" + random;
+let random = Math.floor(Math.random() * 100000); // returns a random integer from 0 to 999999
+let username = "testUsername1" + random; //random username to register
 
-let password = "Luchi0%к";
+let password = "Luchi0%к"; //strong password
 
 const headers = {
-  'authorization': {}
+  'authorization': {} //to store token
 }
 
-let noteIds = [];
+let noteIds = []; //to store id of every  created note
 
-let shareableLink;
+let shareableLink; // to store shareable link
 
-//testing
 describe('signup', () => {
   test('signup to get a token', async () => {
     let response = await fetch.signup(username, password);
@@ -25,6 +23,7 @@ describe('signup', () => {
 
 describe('create notes', () => {
   test('create note with more than 1000 characters length', async() => {
+    
     let tooLongText = 'WmavYRjQDZCN6sWdKTvvw3GCXrTLgzL70SwMkyo1JCx6ruMC1uYubj0'
     +'3cktFAlIZyuGyyREiqzfgwV6dx2hBoAi19pxX8uSbhs0g9d5IMJd5sFVClkb9pXNMxpEmYzur'
     +'ZRLppy6bdRh8WqIX3LyCET9D94MeDZWvvTmIwSY0WfCCoRqqC4O5C8Fkq9SAiK2mK2MbXOV3H'
@@ -67,6 +66,7 @@ test('check created notes', async() => {
 
 describe('update notes', () => {
   test('update note with more than 1000 characters length', async() => {
+    
     let tooLongText = 'WmavYRjQDZCN6sWdKTvvw3GCXrTLgzL70SwMkyo1JCx6ruMC1uYubj0'
     +'3cktFAlIZyuGyyREiqzfgwV6dx2hBoAi19pxX8uSbhs0g9d5IMJd5sFVClkb9pXNMxpEmYzur'
     +'ZRLppy6bdRh8WqIX3LyCET9D94MeDZWvvTmIwSY0WfCCoRqqC4O5C8Fkq9SAiK2mK2MbXOV3H'
@@ -106,6 +106,7 @@ test('check updated notes', async() => {
 
 describe('remove notes', () => {
   test('remove almost every created note', async() => {
+    
     //remove every note except last one
     for(let i = 0; i < 9; ++i)
     {
@@ -128,7 +129,6 @@ test('get shareable link to note', async() => {
 
 describe('logout', () => {
   test('disable token', async() => {
-
     let response = await fetch.logout(headers);
     expect(response.status).toEqual(200);
   })

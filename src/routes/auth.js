@@ -6,6 +6,7 @@ var util = require('../util');
 var validator = require('validator');
 
 router.post('/signup', async(req, res, next) => {
+  
   try
   {
     let password = req.body.password;
@@ -40,7 +41,7 @@ router.post('/login', async(req, res, next) => {
   
     let user = await authService.getUser(username, password);
 
-    if(user) // send token
+    if(user)
     {
       const token = await jwt.sign({user}, process.env.JWT_SECRET_KEY, {expiresIn: "24h"});
 
@@ -58,10 +59,11 @@ router.post('/login', async(req, res, next) => {
 });
 
 router.post('/logout', util.verifyToken, async (req,res,next) => {
+  
   try
   {
     let token = req.decoded.token;
-    await util.saveToBlackList(token, true, 'EX', 60 * 60 * 24); // 24 hours
+    await util.saveToBlackList(token, true, 'EX', 60 * 60 * 24); // save for 24 hours
     res.sendStatus(200);
   }
   catch(e)

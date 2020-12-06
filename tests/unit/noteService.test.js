@@ -1,15 +1,14 @@
 var noteService = require('../../src/services/noteService');
 const { Sequelize, DataTypes } = require('sequelize');
 
-//setup environment
 const sequelize = new Sequelize('db', 'name', 'password', {
   host: 'localhost',
   dialect: 'postgres',
   logging: false
-});
+});// new sequelize object to open and close connection
 
 var fakeUser = {id:1000, username:"someUsername", password:"somePasswoord"};
-var noteId;
+var noteId; // to store id of new note
 
 beforeAll(async()=>{
   await sequelize.sync();
@@ -33,6 +32,7 @@ describe('create note', () => {
 
   test('create with undefined user', async() => {
     let undefinedUser;
+    
     try
     {
       let note = await noteService.createNote("someText", undefinedUser);
@@ -45,6 +45,7 @@ describe('create note', () => {
 
   test('create with undefined text', async() => {
     let undefinedText;
+    
     try
     {
       let note = await noteService.createNote(undefinedText, fakeUser);
@@ -97,6 +98,7 @@ describe('update note', () => {
 
   test('update with undefined user', async() => {
     let undefinedUser;
+    
     try
     {
       let note = await noteService.updateNote(undefinedUser, noteId, "updated text");
@@ -115,6 +117,7 @@ describe('update note', () => {
 
   test('update with undefined noteId', async() => {
     let undefinedNoteId;
+    
     try
     {
       let note = await noteService.updateNote(fakeUser, undefinedNoteId, "updated text");
@@ -140,6 +143,7 @@ describe('remove note', () => {
 
   test('remove with undefined user', async() => {
     let undefinedUser;
+    
     try
     {
       let note = await noteService.removeNote(undefinedUser, noteId);
@@ -152,6 +156,7 @@ describe('remove note', () => {
   
   test('remove with undefined noteId', async() => {
     let undefinedNoteId;
+    
     try
     {
       let note = await noteService.removeNote(fakeUser, undefinedNoteId);

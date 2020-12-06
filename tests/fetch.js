@@ -1,5 +1,4 @@
 var axios = require('axios');
-// Make a request for a user with a given ID
 
 async function checkToken(headers) 
 {
