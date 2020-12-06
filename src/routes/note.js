@@ -76,7 +76,11 @@ router.put('/:id', util.verifyToken, async (req, res, next) => {
     if(text.length > 1000)
       return res.status(400).json("Размер заметки не должен привышать 1000 символом");
     
-    await noteService.updateNote(user, noteId, text);
+    let status = await noteService.updateNote(user, noteId, text);
+
+    if(status[0] == 0) // if user tried to edit another one's note
+      return res.sendStatus(403);
+
     res.sendStatus(200);
   }
   catch(e)
