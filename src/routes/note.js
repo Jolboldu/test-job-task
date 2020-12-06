@@ -4,13 +4,13 @@ var noteService = require('../services/noteService');
 var util = require('../util');
 var crypto = require('crypto');
 
-/* GET users listing. */
 router.get('/all', async (req, res, next) => {
   let notes = await noteService.getAllNotes();
   res.json(notes);
 });
 
 router.get('/my', util.verifyToken, async (req, res, next) => {
+  
   try
   {
     let user = req.decoded.user;
@@ -22,7 +22,6 @@ router.get('/my', util.verifyToken, async (req, res, next) => {
   {
     res.sendStatus(500);
   }
-
 });
 
 router.post('/', util.verifyToken, async (req, res, next) => {
@@ -32,11 +31,12 @@ router.post('/', util.verifyToken, async (req, res, next) => {
     let text = req.body.text;
     let user = req.decoded.user;
 
+    if(text.length > 1000)
+      return res.status(400).json("Размер заметки не должен привышать 1000 символом");
+
     let note = await noteService.createNote(text, user);
 
-    if(note)
-      return res.sendStatus(200);
-    res.sendStatus(400);
+    return res.status(200).json(note);
   }
   catch(e)
   {
@@ -53,7 +53,7 @@ router.delete('/:id', util.verifyToken, async (req, res, next) => {
     let user = req.decoded.user;
 
     await noteService.removeNote(user, noteId);
-    return res.sendStatus(200);
+    res.sendStatus(200);
   }
   catch(e)
   {
@@ -68,10 +68,13 @@ router.put('/:id', util.verifyToken, async (req, res, next) => {
   {
     let noteId = req.params.id;
     let user = req.decoded.user;
-    let text = req.body.text;
-
+    let text = req.body.text; //check text length
+    
+    if(text.length > 1000)
+      return res.status(400).json("Размер заметки не должен привышать 1000 символом");
+    
     await noteService.updateNote(user, noteId, text);
-    return res.sendStatus(200);
+    res.sendStatus(200);
   }
   catch(e)
   {

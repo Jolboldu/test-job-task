@@ -14,6 +14,7 @@ async function createUser(username, password)
   catch(e)
   {
     console.log(e);
+    return e;
   }
 }
 
@@ -46,6 +47,30 @@ async function getUser(username, password)
   }
 }
 
+async function getExistingUser(username)
+{
+  try
+  {
+    let user = await models.User.findAll(
+      {
+        where: {
+          username: username
+        }
+      }
+    );
+
+    if(user.length == 0)
+      return undefined;
+    
+    return user[0].dataValues;
+  } 
+  catch(e)
+  {
+    console.log(e);
+    return e;
+  }
+};
+
 async function removeUserById(userId)
 {
   try
@@ -67,5 +92,6 @@ async function removeUserById(userId)
 module.exports = {
   createUser,
   getUser,
-  removeUserById
+  removeUserById,
+  getExistingUser
 };

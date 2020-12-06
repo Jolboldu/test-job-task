@@ -1,6 +1,7 @@
 var noteService = require('../../src/services/noteService');
 const { Sequelize, DataTypes } = require('sequelize');
 
+//setup environment
 const sequelize = new Sequelize('db', 'name', 'password', {
   host: 'localhost',
   dialect: 'postgres',
@@ -21,6 +22,7 @@ afterAll(async() => {
   await sequelize.close();
 });
 
+
 describe('create note', () => {
 
   test('create with proper input', async() => {  
@@ -31,31 +33,54 @@ describe('create note', () => {
 
   test('create with undefined user', async() => {
     let undefinedUser;
-    let note = await noteService.createNote("someText", undefinedUser);
-    expect(note).toBe(undefined);
+    try
+    {
+      let note = await noteService.createNote("someText", undefinedUser);
+    }
+    catch(e)
+    {
+      expect(note).toBe(Error);
+    }
   });
 
   test('create with undefined text', async() => {
     let undefinedText;
-    let note = await noteService.createNote(undefinedText, fakeUser);
-    expect(note).toBe(undefined);
+    try
+    {
+      let note = await noteService.createNote(undefinedText, fakeUser);
+    }
+    catch(e)
+    {
+      expect(note).toBe(Error);
+    }
   });
 
   test('create with inappropriate text datatype', async() => {
-    let note = await noteService.createNote({5265:4}, fakeUser);
-    expect(note).toBe(undefined);
+    try
+    {
+      let note = await noteService.createNote({5265:4}, fakeUser);
+    }
+    catch(e)
+    {
+      expect(note).toBe(Error);
+    }
   });
 
   test('create with inappropriate user datatype', async() => {
-    let note = await noteService.createNote('someText', 'qwerq');
-    expect(note).toBe(undefined);
+    try
+    {
+      let note = await noteService.createNote('someText', 'qwerq');
+    }
+    catch(e)
+    {
+      expect(note).toBe(Error);
+    }
   });
 });
 
 describe('update note', () => {
   
-  test('update with proper input', async() => {
-    
+  test('update with proper input', async() => {   
     let note = await noteService.updateNote(fakeUser, noteId, "updated text");
     expect(note[0]).toBe(1);
   });
@@ -72,8 +97,14 @@ describe('update note', () => {
 
   test('update with undefined user', async() => {
     let undefinedUser;
-    let note = await noteService.updateNote(undefinedUser, noteId, "updated text");
-    expect(note).toBe(undefined);
+    try
+    {
+      let note = await noteService.updateNote(undefinedUser, noteId, "updated text");
+    }
+    catch(e)
+    {
+      expect(note).toBe(Error);
+    }
   });
   
   test('update with undefined text', async() => {
@@ -84,8 +115,14 @@ describe('update note', () => {
 
   test('update with undefined noteId', async() => {
     let undefinedNoteId;
-    let note = await noteService.updateNote(fakeUser, undefinedNoteId, "updated text");
-    expect(note).toBe(undefined);
+    try
+    {
+      let note = await noteService.updateNote(fakeUser, undefinedNoteId, "updated text");
+    }
+    catch(e)
+    {
+      expect(note).toBe(Error);
+    }
   });
 
 });
@@ -103,14 +140,26 @@ describe('remove note', () => {
 
   test('remove with undefined user', async() => {
     let undefinedUser;
-    let note = await noteService.removeNote(undefinedUser, noteId);
-    expect(note).toBe(undefined);
+    try
+    {
+      let note = await noteService.removeNote(undefinedUser, noteId);
+    }
+    catch(e)
+    {
+      expect(note).toBe(Erro);
+    }
   });
   
   test('remove with undefined noteId', async() => {
     let undefinedNoteId;
-    let note = await noteService.removeNote(fakeUser, undefinedNoteId);
-    expect(note).toBe(undefined);
+    try
+    {
+      let note = await noteService.removeNote(fakeUser, undefinedNoteId);
+    }
+    catch(e)
+    {
+      expect(note).toBe(Erro);
+    }
   });
 });
 

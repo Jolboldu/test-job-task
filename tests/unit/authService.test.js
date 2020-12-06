@@ -9,8 +9,6 @@ const sequelize = new Sequelize('db', 'name', 'password', {
 
 var tmpUserId;
 beforeAll(async()=>{
-  // await sequelize.sync();
-
   await sequelize.authenticate();
   console.log('Connection has been established successfully.');
 })
@@ -31,22 +29,40 @@ describe('create user', () => {
   test('create user with undefined username', async() => {
     let username;
     let password="qwerqs";
-    let user = await authService.createUser(username, password);
-    expect(user).toBe(undefined);
+    try
+    {
+      let user = await authService.createUser(username, password);
+    }
+    catch(e)
+    {
+      expect(e).toBe(Error);
+    }
   })
   
   test('create user with undefined password', async() => {
     let username = "qwerqsd";
     let password;
-    let user = await authService.createUser(username, password);
-    expect(user).toBe(undefined);
+    try
+    {
+      let user = await authService.createUser(username, password);
+    }
+    catch(e)
+    {
+      expect(e).toBe(Error);
+    }
   })
 
   test('create user with inappropriate username datatype', async() => {
     let username = {598:75};
     let password ="555457";
-    let user = await authService.createUser(username, password);
-    expect(user).toBe(undefined);
+    try
+    {
+      let user = await authService.createUser(username, password);
+    }
+    catch(e)
+    {
+      expect(e).toBe(Error);
+    }
   })
   
   test('create user with more than 255 character username', async() => {
@@ -56,8 +72,14 @@ describe('create user', () => {
     +"$2b$10$vTRFJvQ.QO8RvYGBS4HN2eam4IwOKIZGAWvwG2UivPQAQZlrEW/qm"
     +"$2b$10$vTRFJvQ.QO8RvYGBS4HN2eam4IwOKIZGAWvwG2UivPQAQZlrEW/qm";
     let password;
-    let user = await authService.createUser(username, password);
-    expect(user).toBe(undefined);
+    try
+    {
+      let user = await authService.createUser(username, password);
+    }
+    catch(e)
+    {
+      expect(e).toBe(Error);
+    }
   })
 });
 

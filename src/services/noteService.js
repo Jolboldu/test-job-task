@@ -11,6 +11,7 @@ async function createNote(text, user)
   catch(e)
   {
     console.log(e);
+    return e;
   }
 }
 
@@ -30,6 +31,7 @@ async function removeNote(user, noteId)
   catch(e)
   {
     console.log(e);
+    return e;
   }
 }
 
@@ -48,6 +50,7 @@ async function updateNote(user, noteId, text)
   catch(e)
   {
     console.log(e);
+    return e;
   }
 }
 
@@ -68,6 +71,7 @@ async function getNote(scope)
   catch(e)
   {
     console.log(e);
+    return e;
   }
 }
 
@@ -81,6 +85,7 @@ async function getAllNotes()
   catch(e)
   {
     console.log(e);
+    return e;
   }
 }
 
@@ -98,6 +103,7 @@ async function getUserNotes(user)
   catch(e)
   {
     console.log(e);
+    return e;
   }
 }
 

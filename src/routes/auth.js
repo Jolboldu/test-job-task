@@ -3,31 +3,26 @@ var router = express.Router();
 var authService = require('../services/authService');
 var jwt = require('jsonwebtoken');
 var util = require('../util');
-
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+var validator = require('validator');
 
 router.post('/signup', async(req, res, next) => {
-  let password = req.body.password;
-  let username = req.body.username;
-
-  //validation  
-  
-  //sanitazing
-
   try
   {
+    let password = req.body.password;
+    let username = req.body.username;
+    
+    if(!validator.isStrongPassword(password))
+      return res.status(400).json("ваш пароль слишком слабый, " 
+      + "Требования к паролю: минимум 8 символов, 1 заглавная буква, 1 строчная и 1 цифра и 1 символ ");
+
+    if(await authService.getExistingUser(username))
+      return res.status(400).json("такой username уже занят")
     
     let user = await authService.createUser(username, password);
-    if(user)
-    {
-      const token = await jwt.sign({user}, process.env.JWT_SECRET_KEY, {expiresIn: "7 days"});
 
-      return res.json(token)  
-    }
-    res.sendStatus(500)
+    let token = await jwt.sign({user}, process.env.JWT_SECRET_KEY, {expiresIn: "7 days"});
+
+    return res.json(token)  
   }
   catch(e)
   {
@@ -37,15 +32,12 @@ router.post('/signup', async(req, res, next) => {
 });
 
 router.post('/login', async(req, res, next) => {
-  let password = req.body.password;
-  let username = req.body.username;
-
-  //validation  
-  //sanitazing
 
   try
   {
-    
+    let password = req.body.password;
+    let username = req.body.username;
+  
     let user = await authService.getUser(username, password);
 
     if(user) // send token
@@ -55,7 +47,7 @@ router.post('/login', async(req, res, next) => {
       return res.json(token)
 
     }
-    res.send('no user')  
+    res.sendStatus(403)  
     
   }
   catch(e)
@@ -65,17 +57,11 @@ router.post('/login', async(req, res, next) => {
   }
 });
 
-router.get('/checkToken', util.verifyToken, (req, res, next) => {
-  res.sendStatus(200);
-})
-
 router.post('/logout', util.verifyToken, async (req,res,next) => {
   try
   {
     let token = req.decoded.token;
-    // set time
-    // save to redis black list
-    await util.saveToBlackList(token, true, 'EX', 60 * 60 * 24);
+    await util.saveToBlackList(token, true, 'EX', 60 * 60 * 24); // 24 hours
     res.sendStatus(200);
   }
   catch(e)
@@ -85,5 +71,8 @@ router.post('/logout', util.verifyToken, async (req,res,next) => {
   }
 })
 
+router.get('/isValidToken', util.verifyToken, async (req,res,next) => {
+  res.sendStatus(200);
+})
 
 module.exports = router;
