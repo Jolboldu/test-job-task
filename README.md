@@ -17,6 +17,14 @@ Backend api
   )`
   Если же вы хотите поменять названия, то sequelize данные вводятся в трех разных файлах: `models/database`, `/tests/unit/authService.test.js`, `/tests/unit/noteService.test.js`
 
+## Запуск
+`node src/bin/www`
+
+
+## Тесты
+`npm run test`
+Прежде чем запустить тесты, убедитесь что вы запустили сервер
+
 ## API документация
 `jwt header` - ввести токен в `authorization` header
 | URL | method |jwt header|success response| error response|params|description|
